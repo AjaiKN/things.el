@@ -319,38 +319,67 @@ If USE-GENERAL is non-nil, bind the keys using general.el."
         (things-remote-bounds ',adjusted-things)
         type))))
 
+(defcustom things-evil-inner-key "i"
+  ""
+  :group 'things-evil
+  :type '(choice key (const nil)))
+(defcustom things-evil-a-key "a"
+  ""
+  :group 'things-evil
+  :type '(choice key (const nil)))
+(defcustom things-evil-inside-key "I"
+  ""
+  :group 'things-evil
+  :type '(choice key (const nil)))
+(defcustom things-evil-around-key "A"
+  ""
+  :group 'things-evil
+  :type '(choice key (const nil)))
+(defcustom things-evil-next-key "n"
+  ""
+  :group 'things-evil
+  :type '(choice key (const nil)))
+(defcustom things-evil-last-key "l"
+  ""
+  :group 'things-evil
+  :type '(choice key (const nil)))
+(defcustom things-evil-remote-key "r"
+  ""
+  :group 'things-evil
+  :type '(choice key (const nil)))
+
 ;; TODO make name optional? (not as useful for non-composite)
 (cl-defmacro things-evil-define (name things &key
-                                      (inner-key "i")
-                                      (a-key "a")
-                                      (inside-key "I")
-                                      (around-key "A")
-                                      (next-key "n")
-                                      (last-key "l")
-                                      (remote-key "r")
+                                      inner-key
+                                      a-key
+                                      inside-key
+                                      around-key
+                                      next-key
+                                      last-key
+                                      remote-key
                                       keys
                                       keymaps
                                       hooks)
   "...
 THINGS should not contain adjustments."
   `(progn
-     ,@(cl-loop for (adjustment prefix-key) in `((inner ,inner-key)
-                                                 (a ,a-key)
-                                                 (inside ,inside-key)
-                                                 (around ,around-key))
+     ,@(cl-loop for (adjustment prefix-key) in `((inner (or ,inner-key things-evil-inner-key))
+                                                 (a (or ,a-key things-evil-a-key))
+                                                 (inside (or ,inside-key things-evil-inside-key))
+                                                 (around (or ,around-key things-evil-around-key)))
                 collect
                 `(progn
                    (things-evil--maybe-define-keys
                     ,keymaps ,hooks ,prefix-key t ,keys
                     (things-evil--define-regular-text-object ,name ,adjustment ,things))
                    (things-evil--maybe-define-keys
-                    ,keymaps ,hooks ,prefix-key ,next-key ,keys
+                    ,keymaps ,hooks ,prefix-key (or ,next-key things-evil-next-key) ,keys
                     (things-evil--define-next-text-object ,name ,adjustment ,things))
                    (things-evil--maybe-define-keys
-                    ,keymaps ,hooks ,prefix-key ,last-key ,keys
+                    ,keymaps ,hooks ,prefix-key (or ,last-key things-evil-last-key) ,keys
                     (things-evil--define-last-text-object ,name ,adjustment ,things))
                    (things-evil--maybe-define-keys
-                    ,keymaps ,hooks ,prefix-key ,remote-key ,keys
+                    ,keymaps ,hooks ,prefix-key (or ,remote-key things-evil-remote-key) ,keys
                     (things-evil--define-remote-text-object ,name ,adjustment ,things))))))
 
 ;; TODO way to simultaneously create thing (would require `things-evil-define'

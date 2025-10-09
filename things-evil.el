@@ -393,3 +393,9 @@ THINGS should not contain adjustments."
 
 (provide 'things-evil)
 ;;; things-evil.el ends here
+
+;; Local Variables:
+;; outline-regexp: "\\(;;\\( \\*+\\|;+\\) \\)"
+;; outli-heading-stem: ";; "
+;; outli-heading-char: ?\*
+;; End:

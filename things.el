@@ -1889,3 +1889,9 @@ beginning or end at the buffer end."
 
 (provide 'things)
 ;;; things.el ends here
+
+;; Local Variables:
+;; outline-regexp: "\\(;;\\( \\*+\\|;+\\) \\)"
+;; outli-heading-stem: ";; "
+;; outli-heading-char: ?\*
+;; End:
